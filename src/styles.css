@@ -173,24 +173,10 @@ svg {
 .brand {
   display: inline-flex;
   align-items: center;
-  gap: 0.52rem;
   color: var(--ink);
   font-size: 0.95rem;
   font-weight: 680;
   white-space: nowrap;
-}
-
-.brand span {
-  display: inline-grid;
-  width: 1.56rem;
-  height: 1.56rem;
-  place-items: center;
-  border: 1px solid rgba(138, 133, 124, 0.62);
-  color: var(--ink);
-  font-size: 0.62rem;
-  font-weight: 720;
-  letter-spacing: 0.03em;
-  line-height: 1;
 }
 
 .nav-links {

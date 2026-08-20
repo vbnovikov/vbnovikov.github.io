@@ -563,7 +563,6 @@ function App() {
       <header className="site-header">
         <nav className="nav-shell" aria-label="Primary navigation">
           <a className="brand" href="#top" aria-label="Vladimir Belsch home">
-            <span aria-hidden="true">VB</span>
             Vladimir Belsch
           </a>
           <div className="nav-links">
