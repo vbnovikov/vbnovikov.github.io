@@ -111,6 +111,14 @@ const projects: Project[] = [
     href: "https://github.com/vbnovikov/customer-intake-workflow-reference",
     tags: ["Validation", "Idempotency", "Audit", "Outbox", "Tenant isolation"],
   },
+  {
+    category: "Experiment",
+    title: "Deal Appetite Experiment",
+    summary:
+      "Synthetic notebook experiment testing whether observable opportunity features can recover useful ranking structure under unobserved variation.",
+    href: "https://github.com/vbnovikov/deal-appetite-experiment",
+    tags: ["Python", "Logistic regression", "ROC AUC", "Spearman", "Ranking"],
+  },
 ];
 
 const capabilityGroups: CapabilityGroup[] = [
@@ -632,8 +640,8 @@ function App() {
               <div className="section-intro">
                 <h2>Selected systems and integration work.</h2>
                 <p>
-                  Public projects focused on the practical parts of SaaS delivery: identity,
-                  secrets, idempotency, tenant isolation, auditability, and operational handoff.
+                  Public projects and experiments focused on SaaS delivery, technical systems,
+                  ranking under uncertainty, and operational handoff.
                 </p>
               </div>
               <div className="project-list">
