@@ -2,7 +2,7 @@
 
 Personal technical portfolio for `https://vbnovikov.github.io`.
 
-The site is a static Vite + React + TypeScript single-page portfolio focused on solutions engineering, SaaS implementation, cloud infrastructure, integrations, and customer-facing technical delivery. Motion is handled with Framer Motion, the decorative hero topology uses React Force Graph 2D, and small link icons use Lucide React.
+The site is a static Vite + React + TypeScript single-page portfolio focused on solutions engineering, SaaS implementation, cloud infrastructure, integrations, and customer-facing technical delivery. Motion is handled with Framer Motion, the decorative hero topology uses tsparticles, small link icons use Lucide React, and long-form posts render Markdown with KaTeX support.
 
 ## Local Setup
 
@@ -23,7 +23,7 @@ The production output is written to `dist`.
 
 ## GitHub Pages Deployment
 
-This repo includes `.github/workflows/deploy-pages.yml`, which deploys the `dist` build from `main` using GitHub Pages.
+This repo includes `.github/workflows/deploy-pages.yml`, which deploys the `dist` build from `main` using GitHub Pages. The workflow also copies `dist/index.html` to `dist/404.html` so direct single-page app routes such as `/blog/deal-appetite-experiment` load correctly.
 
 For `vbnovikov/vbnovikov.github.io`:
 
@@ -40,10 +40,13 @@ Primary content lives in `src/App.tsx`:
 
 - Navigation and hero copy
 - About/profile paragraphs
+- Blog index metadata
 - Selected project rows
 - Capabilities
 - Experience timeline
 - Education and contact details
+
+Long-form posts live in `src/content` and are rendered by `src/BlogArticlePage.tsx`.
 
 Visual styling lives in `src/styles.css`.
 

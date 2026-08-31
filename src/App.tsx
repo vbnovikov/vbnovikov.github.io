@@ -1,4 +1,4 @@
-import { Component, useEffect, useMemo, useState, type ReactNode } from "react";
+import { Component, lazy, Suspense, useEffect, useMemo, useState, type MouseEvent, type ReactNode } from "react";
 import type { Engine, ISourceOptions } from "@tsparticles/engine";
 import Particles, { ParticlesProvider } from "@tsparticles/react";
 import { loadSlim } from "@tsparticles/slim";
@@ -12,6 +12,14 @@ type Project = {
   summary: string;
   href: string;
   tags: string[];
+};
+
+type BlogPost = {
+  category: string;
+  date: string;
+  href: string;
+  summary: string;
+  title: string;
 };
 
 type CapabilityGroup = {
@@ -66,6 +74,27 @@ const links = {
   email: "mailto:belschvladimir@gmail.com",
   pathflow: "https://getpathflow.com",
 };
+
+const blogArticlePath = "/blog/deal-appetite-experiment";
+
+const blogPosts: BlogPost[] = [
+  {
+    category: "Experiment",
+    date: "2026",
+    href: blogArticlePath,
+    title: "Deal Appetite Experiment",
+    summary:
+      "A research writeup moving from a broad sales-ranking conjecture toward stateful process prediction and graph-shaped CRM context.",
+  },
+];
+
+const normalizePath = (path: string) => {
+  const withoutTrailingSlash = path.replace(/\/+$/, "");
+
+  return withoutTrailingSlash || "/";
+};
+
+const BlogArticlePage = lazy(() => import("./BlogArticlePage"));
 
 const pathflowScope = [
   "Multi-tenant platform",
@@ -522,6 +551,19 @@ function MotionSection({ children, className, id }: { children: ReactNode; class
 function App() {
   const prefersReducedMotion = useReducedMotion();
   const [activeCapabilityId, setActiveCapabilityId] = useState<string | null>(null);
+  const [currentPath, setCurrentPath] = useState(() => normalizePath(window.location.pathname));
+
+  useEffect(() => {
+    const handlePopState = () => {
+      setCurrentPath(normalizePath(window.location.pathname));
+    };
+
+    window.addEventListener("popstate", handlePopState);
+
+    return () => {
+      window.removeEventListener("popstate", handlePopState);
+    };
+  }, []);
 
   useEffect(() => {
     const root = document.documentElement;
@@ -562,6 +604,53 @@ function App() {
   const activeCapabilityDetail = activeCapability?.detail;
   const activeCapabilityDetailId = activeCapability ? `${activeCapability.id}-detail` : undefined;
 
+  const navigateHome = (event?: MouseEvent<HTMLAnchorElement>) => {
+    if (event) {
+      event.preventDefault();
+    }
+
+    window.history.pushState({}, "", "/");
+    setCurrentPath("/");
+    window.requestAnimationFrame(() => window.scrollTo({ top: 0, behavior: "smooth" }));
+  };
+
+  const navigateHomeSection = (sectionId: string) => (event: MouseEvent<HTMLAnchorElement>) => {
+    event.preventDefault();
+
+    window.history.pushState({}, "", `/#${sectionId}`);
+    setCurrentPath("/");
+    window.requestAnimationFrame(() => {
+      document.getElementById(sectionId)?.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+    });
+  };
+
+  const navigateBlogArticle = (event: MouseEvent<HTMLAnchorElement>) => {
+    event.preventDefault();
+
+    window.history.pushState({}, "", blogArticlePath);
+    setCurrentPath(blogArticlePath);
+    window.requestAnimationFrame(() => window.scrollTo({ top: 0, behavior: "smooth" }));
+  };
+
+  if (currentPath === blogArticlePath) {
+    return (
+      <Suspense
+        fallback={
+          <main className="article-page">
+            <div className="article-shell">
+              <p>Loading article.</p>
+            </div>
+          </main>
+        }
+      >
+        <BlogArticlePage onNavigateHome={navigateHome} />
+      </Suspense>
+    );
+  }
+
   return (
     <>
       <a className="skip-link" href="#main">
@@ -574,11 +663,24 @@ function App() {
             Vladimir Belsch
           </a>
           <div className="nav-links">
-            <a href="#work">Work</a>
-            <a href="#product-work">Product</a>
-            <a href="#about">About</a>
-            <a href="#experience">Experience</a>
-            <a href="#contact">Contact</a>
+            <a href="#work" onClick={navigateHomeSection("work")}>
+              Work
+            </a>
+            <a href="#blog" onClick={navigateHomeSection("blog")}>
+              Blog
+            </a>
+            <a href="#product-work" onClick={navigateHomeSection("product-work")}>
+              Product
+            </a>
+            <a href="#about" onClick={navigateHomeSection("about")}>
+              About
+            </a>
+            <a href="#experience" onClick={navigateHomeSection("experience")}>
+              Experience
+            </a>
+            <a href="#contact" onClick={navigateHomeSection("contact")}>
+              Contact
+            </a>
             <a href={links.github} target="_blank" rel="noreferrer">
               GitHub
             </a>
@@ -675,10 +777,50 @@ function App() {
           </div>
         </MotionSection>
 
+        <MotionSection id="blog" className="section blog-section">
+          <div className="section-inner section-grid">
+            <div className="section-label" aria-hidden="true">
+              02 Blog
+            </div>
+            <div className="section-content">
+              <div className="section-intro">
+                <h2>Research notes and technical essays.</h2>
+                <p>
+                  Longer-form writing about software systems, process modeling, infrastructure,
+                  and technical experiments.
+                </p>
+              </div>
+              <div className="blog-list">
+                {blogPosts.map((post) => (
+                  <motion.a
+                    className="blog-row"
+                    href={post.href}
+                    key={post.href}
+                    onClick={navigateBlogArticle}
+                    whileHover={prefersReducedMotion ? undefined : { x: 2 }}
+                    transition={{ duration: 0.18, ease: editorialEase }}
+                  >
+                    <div className="blog-meta-row">
+                      <span>{post.category}</span>
+                      <time>{post.date}</time>
+                    </div>
+                    <h3>{post.title}</h3>
+                    <p>{post.summary}</p>
+                    <span className="inline-link">
+                      Read article
+                      <ArrowRight aria-hidden="true" className="link-icon" />
+                    </span>
+                  </motion.a>
+                ))}
+              </div>
+            </div>
+          </div>
+        </MotionSection>
+
         <MotionSection id="product-work" className="section product-section">
           <div className="section-inner section-grid">
             <div className="section-label" aria-hidden="true">
-              02 Selected Product Work
+              03 Selected Product Work
             </div>
             <div className="section-content">
               <article className="product-feature" aria-labelledby="pathflow-heading">
@@ -726,7 +868,7 @@ function App() {
         <MotionSection id="about" className="section">
           <div className="section-inner section-grid">
             <div className="section-label" aria-hidden="true">
-              03 About
+              04 About
             </div>
             <div className="section-content prose">
               <h2>Technical operator with a sales foundation.</h2>
@@ -747,7 +889,7 @@ function App() {
         <MotionSection id="experience" className="section">
           <div className="section-inner section-grid">
             <div className="section-label" aria-hidden="true">
-              04 Experience
+              05 Experience
             </div>
             <div className="section-content">
               <div className="section-intro">
@@ -776,7 +918,7 @@ function App() {
         <MotionSection className="section">
           <div className="section-inner section-grid">
             <div className="section-label" aria-hidden="true">
-              05 Capabilities
+              06 Capabilities
             </div>
             <div className="section-content">
               <div className="capability-list">
@@ -858,7 +1000,7 @@ function App() {
         <MotionSection className="section education-section">
           <div className="section-inner section-grid">
             <div className="section-label" aria-hidden="true">
-              06 Education
+              07 Education
             </div>
             <div className="section-content education-row">
               <time>2019</time>
@@ -881,7 +1023,7 @@ function App() {
         <MotionSection id="contact" className="section contact-section">
           <div className="section-inner section-grid">
             <div className="section-label" aria-hidden="true">
-              07 Contact
+              08 Contact
             </div>
             <div className="section-content contact-copy">
               <h2>Get in touch</h2>
