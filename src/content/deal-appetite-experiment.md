@@ -34,7 +34,7 @@ $$
 
 such that $f(x_i)$ preserves useful relative ordering even when $\varepsilon_i$ is unobserved.
 
-Here, $x_i$ means the feature vector for opportunity $i$: the list of measurements the model is allowed to see. A plain-language explanation of feature vectors, feature groups, and preprocessing is included in [Appendix A](#appendix-a-feature-vectors-notation-and-preprocessing).
+Here, $x_i$ means the feature vector for opportunity $i$: the list of measurements the model is allowed to see. Plain-language explanations of notation, feature vectors, feature groups, and preprocessing are included in [Appendix A1](#appendix-a1-libraries-and-notation), [Appendix A2](#appendix-a2-feature-vectors), [Appendix A3](#appendix-a3-feature-groups), and [Appendix A6](#appendix-a6-categorical-and-numerical-preprocessing).
 
 ### $H_0$
 
@@ -87,13 +87,13 @@ $$
 
 A logistic regression was then trained using only $f_i$, $u_i$, $t_i$, and $r_i$. The latent appetite, unobserved term, and true closing probability were withheld from the model.
 
-The point of the synthetic setup is to separate what is observable from what is hidden. [Appendix A](#appendix-a-feature-vectors-notation-and-preprocessing) explains how observable columns become model inputs, and [Appendix B](#appendix-b-evaluation-metrics) explains the ranking metrics used to evaluate the model.
+The point of the synthetic setup is to separate what is observable from what is hidden. [Appendix A2](#appendix-a2-feature-vectors) explains how observable columns become model inputs, and [Appendix B2](#appendix-b2-roc-auc) and [Appendix B3](#appendix-b3-spearman-rank-correlation) explain the ranking metrics used to evaluate the model.
 
 ## Evaluation
 
 The model was evaluated against three different targets.
 
-The metrics used here are defined in plain language in [Appendix B](#appendix-b-evaluation-metrics).
+The metrics used here are defined in plain language in [Appendix B2](#appendix-b2-roc-auc) and [Appendix B3](#appendix-b3-spearman-rank-correlation).
 
 ### 1. Observed outcome
 
@@ -187,7 +187,7 @@ $$
 
 The model was trained on earlier opportunities and evaluated on later ones.
 
-This is a temporal holdout: the test cases occur later in time than the training cases. [Appendix A](#appendix-a-feature-vectors-notation-and-preprocessing) explains why the same boundary also matters for preprocessing.
+This is a temporal holdout: the test cases occur later in time than the training cases. [Appendix A7](#appendix-a7-training-only-preprocessing) explains why the same boundary also matters for preprocessing.
 
 The baseline result was:
 
@@ -237,7 +237,7 @@ $$
 
 where $\mathbf{x}_i^{(s)}$ is the feature vector containing the static CRM information supplied to the model.
 
-If this notation is unfamiliar, read $\mathbf{x}_i^{(s)}$ as "the static-data row for opportunity $i$ after it has been converted into numbers." [Appendix A](#appendix-a-feature-vectors-notation-and-preprocessing) gives concrete examples.
+If this notation is unfamiliar, read $\mathbf{x}_i^{(s)}$ as "the static-data row for opportunity $i$ after it has been converted into numbers." [Appendix A1](#appendix-a1-libraries-and-notation) explains the notation, and [Appendix A2](#appendix-a2-feature-vectors) gives concrete examples.
 
 The static feature set includes fields such as:
 
@@ -251,7 +251,7 @@ The static feature set includes fields such as:
 - deal value
 - engagement month
 
-Categorical fields are one-hot encoded and numerical fields are standardized using statistics from the training set. The preprocessing details are included in [Appendix A](#appendix-a-feature-vectors-notation-and-preprocessing).
+Categorical fields are one-hot encoded and numerical fields are standardized using statistics from the training set. The preprocessing details are included in [Appendix A6](#appendix-a6-categorical-and-numerical-preprocessing) and [Appendix A7](#appendix-a7-training-only-preprocessing).
 
 ### Interaction-Derived Features
 
@@ -323,7 +323,7 @@ $$
 
 However, the available interaction records were not clean opportunity-level histories. Many interactions were better interpreted as relationship-level observations between salesperson and customer contact. The implemented baselines therefore tested a narrower question first: whether first-30-day activity summaries or first-30-day lexical content contained stable ranking signal under temporal validation.
 
-Implementation details for preprocessing, modeling, and evaluation are included in the appendices, especially [Appendix A](#appendix-a-feature-vectors-notation-and-preprocessing) and [Appendix B](#appendix-b-evaluation-metrics).
+Implementation details for preprocessing, modeling, and evaluation are included in the appendices, especially [Appendix A6](#appendix-a6-categorical-and-numerical-preprocessing), [Appendix A7](#appendix-a7-training-only-preprocessing), and [Appendix B1](#appendix-b1-evaluation-tasks).
 
 ## Interaction History Results
 
@@ -422,7 +422,7 @@ The next experiment tested whether preserving more of the sequence improves pred
 
 Instead of treating an opportunity as one static feature vector, each customer journey is represented as an ordered series of events.
 
-This is the sequence version of the same idea. A feature vector stores a fixed list of inputs for one example; a sequence stores an ordered list of events for one example. [Appendix A](#appendix-a-feature-vectors-notation-and-preprocessing) gives the feature-vector version first, because it is the simpler case.
+This is the sequence version of the same idea. A feature vector stores a fixed list of inputs for one example; a sequence stores an ordered list of events for one example. [Appendix A2](#appendix-a2-feature-vectors) gives the feature-vector version first, and [Appendix A5](#appendix-a5-histories-as-feature-vectors) shows how histories are converted into model inputs.
 
 For session $i$, let:
 
@@ -567,7 +567,7 @@ For that reason:
 
 This keeps the question meaningful: given only what had happened so far, could the model rank sessions by their eventual probability of conversion?
 
-This is the same leakage rule used throughout the experiments: do not let information from after the prediction time enter the inputs. [Appendix A](#appendix-a-feature-vectors-notation-and-preprocessing) describes the rule in preprocessing terms.
+This is the same leakage rule used throughout the experiments: do not let information from after the prediction time enter the inputs. [Appendix A7](#appendix-a7-training-only-preprocessing) describes the rule in preprocessing terms.
 
 ### Constructing the Sequences
 
@@ -1488,7 +1488,7 @@ This can be read as:
 
 > the probability of the next process state, given the current state, the history so far, and the surrounding relational context.
 
-The notation is compact, but the idea is ordinary supervised learning: each row contains what was known at time $t$, and the label is what happened at time $t+1$. [Appendix A](#appendix-a-feature-vectors-notation-and-preprocessing) translates this into a simple table-style example.
+The notation is compact, but the idea is ordinary supervised learning: each row contains what was known at time $t$, and the label is what happened at time $t+1$. [Appendix A5](#appendix-a5-histories-as-feature-vectors) translates this into a simple table-style example.
 
 ### Constructing Prediction Snapshots
 
@@ -1596,7 +1596,7 @@ test_snapshots = event_snapshots[
 
 This preserves the same basic rule used throughout the experiments: the model should learn from the past and be evaluated on later cases.
 
-[Appendix A](#appendix-a-feature-vectors-notation-and-preprocessing) gives the general version of this rule, and [Appendix B](#appendix-b-evaluation-metrics) explains why the reported next-event metrics are accuracy, macro F1, and weighted F1 rather than only AUC.
+[Appendix A7](#appendix-a7-training-only-preprocessing) gives the general version of this rule, and [Appendix B1](#appendix-b1-evaluation-tasks), [Appendix B4](#appendix-b4-accuracy), and [Appendix B6](#appendix-b6-macro-f1-and-weighted-f1) explain why the reported next-event metrics are accuracy, macro F1, and weighted F1 rather than only AUC.
 
 ## State-Only Baseline
 
@@ -1698,7 +1698,7 @@ offer_event_count       = 2
 workflow_event_count    = 5
 ```
 
-Categorical features such as `current_activity` and `previous_activity` are one-hot encoded. Numerical features are standardized. [Appendix A](#appendix-a-feature-vectors-notation-and-preprocessing) shows why both transformations are needed before a standard classifier can read the data.
+Categorical features such as `current_activity` and `previous_activity` are one-hot encoded. Numerical features are standardized. [Appendix A6](#appendix-a6-categorical-and-numerical-preprocessing) shows why both transformations are needed before a standard classifier can read the data.
 
 The model is built with scikit-learn:
 
@@ -1814,7 +1814,7 @@ The models were evaluated with:
 - macro F1
 - weighted F1
 
-These are classification metrics rather than ranking metrics because the target is now a specific next event, not a binary win/loss outcome. [Appendix B](#appendix-b-evaluation-metrics) explains the difference.
+These are classification metrics rather than ranking metrics because the target is now a specific next event, not a binary win/loss outcome. [Appendix B1](#appendix-b1-evaluation-tasks) explains the difference.
 
 The results were:
 
@@ -1863,7 +1863,7 @@ Resource identity can also capture:
 - operational routing
 - workload patterns
 
-The ablation establishes only that this information helps predict what happens next. Metric definitions for accuracy, macro F1, and weighted F1 are included in [Appendix B](#appendix-b-evaluation-metrics).
+The ablation establishes only that this information helps predict what happens next. Metric definitions for accuracy, macro F1, and weighted F1 are included in [Appendix B4](#appendix-b4-accuracy), [Appendix B5](#appendix-b5-precision-recall-and-f1), and [Appendix B6](#appendix-b6-macro-f1-and-weighted-f1).
 
 ## Graph-Derived Context
 
@@ -2111,7 +2111,7 @@ $$
 
 The experiments do not establish that this is always the best representation. They show that information represented by $H_{i,t}$ and parts of $G_{i,t}$ improved next-state prediction on the process data tested here.
 
-[Appendix A](#appendix-a-feature-vectors-notation-and-preprocessing) gives the preprocessing view of this: graph context still has to be converted into model-readable features before a standard classifier can use it.
+[Appendix A2](#appendix-a2-feature-vectors) and [Appendix A6](#appendix-a6-categorical-and-numerical-preprocessing) give the preprocessing view of this: graph context still has to be converted into model-readable features before a standard classifier can use it.
 
 ### Current State Is a Compression
 
@@ -2346,18 +2346,127 @@ The next question is whether richer graph-native representations can improve dec
 
 ## Appendices
 
-### Appendix A: Feature Vectors, Notation, and Preprocessing
+These appendices are numbered by topic. Appendix A covers notation, feature construction, and preprocessing. Appendix B covers evaluation metrics. Appendix C covers data and reproducibility.
+
+### Appendix A1: Libraries and Notation
+
+This appendix explains the notation and library mechanics used throughout the experiments. It is meant to make the article readable even if the reader has only seen introductory statistics or discrete math.
 
 The experiments were written in Python and run in Jupyter.
 
 The main libraries were:
 
-- **pandas** for loading, joining, filtering, and transforming CRM and event-log data
-- **NumPy** for numerical operations in the synthetic experiments
-- **scikit-learn** for preprocessing, modeling, and evaluation
+- **pandas** for loading, joining, filtering, grouping, and transforming CRM and event-log data
+- **NumPy** for random-number generation and vectorized numerical operations in the synthetic experiments
+- **scikit-learn** for preprocessing, model fitting, and evaluation
+- **SciPy** for Spearman rank correlation
 - **Matplotlib** for plots and visual inspection of results
 
-**What is a feature vector?**
+**Notation guide**
+
+The notation is compact because the same structure appears many times.
+
+| Symbol | Plain meaning |
+|---|---|
+| $i$ | the index of one opportunity, application, case, or event snapshot |
+| $j$ | another index, usually used when comparing two examples |
+| $n$ | the number of examples |
+| $x$ | one input value |
+| $\mathbf{x}_i$ | the full feature vector for example $i$ |
+| $X$ | the full feature table or matrix |
+| $y_i$ | the observed label for example $i$ |
+| $\hat{p}_i$ | the model's estimated probability for example $i$ |
+| $\hat{y}_i$ | the model's predicted class for example $i$ |
+| $S_i$ | systematic appetite in the synthetic experiment |
+| $A_i$ | total latent appetite in the synthetic experiment |
+| $\epsilon_i$ | unobserved variation for example $i$ |
+| $\rho_s$ | Spearman rank correlation |
+
+A subscript tells us **which example** we are talking about.
+
+For example:
+
+$$
+\mathbf{x}_7
+$$
+
+means "the feature vector for example 7."
+
+A superscript in this article is usually a **label**, not a power.
+
+For example:
+
+$$
+\mathbf{x}_i^{(s)}
+$$
+
+means the static CRM feature vector for opportunity $i$.
+
+It does not mean $\mathbf{x}_i$ multiplied by itself.
+
+The hat symbol means **estimated by the model**.
+
+For example:
+
+$$
+p_i
+$$
+
+means the true probability in the synthetic experiment, while:
+
+$$
+\hat{p}_i
+$$
+
+means the model's estimated probability.
+
+The vertical bar means "given" or "conditional on."
+
+For example:
+
+$$
+P(Y_i = 1 \mid \mathbf{x}_i)
+$$
+
+means:
+
+> the probability that example $i$ has outcome $1$, given the features in $\mathbf{x}_i$.
+
+The membership symbol means "is an element of."
+
+For example:
+
+$$
+\sigma \in [0,5]
+$$
+
+means:
+
+> $\sigma$ is chosen from the interval between $0$ and $5$.
+
+In the noise-sensitivity experiment, this was implemented as a finite grid:
+
+```python
+noise_levels = np.arange(0, 5.25, 0.25)
+```
+
+So the computer did not test every real number between $0$ and $5$. It tested:
+
+```text
+0.00, 0.25, 0.50, ..., 5.00
+```
+
+The normal-distribution notation:
+
+$$
+x_i \sim \mathcal{N}(0,1)
+$$
+
+means:
+
+> draw $x_i$ from a normal distribution with mean $0$ and standard deviation $1$.
+
+### Appendix A2: Feature Vectors
 
 A model cannot read a CRM row the way a person reads a spreadsheet. It needs a list of values.
 
@@ -2369,7 +2478,7 @@ $$
 
 The bold $\mathbf{x}$ means that the input contains several values, not just one value.
 
-For example, suppose one opportunity has:
+Suppose one opportunity has:
 
 ```text
 product          = GTX Pro
@@ -2380,35 +2489,41 @@ is_subsidiary    = 0
 engage_month     = 3
 ```
 
-After preprocessing, the model might receive a numerical vector like:
+Before a standard model can use that row, text values must be converted into numbers. After preprocessing, the model might receive this vector:
 
 ```text
-[
-    product_GTX_Basic,
-    product_GTX_Pro,
-    product_MG_Special,
-    sector_Finance,
-    sector_Technology,
-    scaled_sales_price,
-    scaled_employees,
-    is_subsidiary,
-    engage_month
-]
-
-[
-    0,
-    1,
-    0,
-    0,
-    1,
-    0.42,
-    -0.18,
-    0,
-    3
-]
+feature name          value
+-------------------   -----
+product_GTX_Basic       0
+product_GTX_Pro         1
+product_MG_Special      0
+sector_Finance          0
+sector_Technology       1
+scaled_sales_price      0.42
+scaled_employees       -0.18
+is_subsidiary           0
+engage_month            3
 ```
 
-The first list names the features. The second list contains the values for this one opportunity.
+The same thing can be written as a mathematical vector:
+
+$$
+\mathbf{x}_i
+=
+\begin{bmatrix}
+0 \\
+1 \\
+0 \\
+0 \\
+1 \\
+0.42 \\
+-0.18 \\
+0 \\
+3
+\end{bmatrix}
+$$
+
+Each row of the vector is one input feature.
 
 When there are many opportunities, the model receives a table of feature vectors:
 
@@ -2425,10 +2540,24 @@ $$
 
 Each row is one example. Each column is one feature.
 
-The outcome or label is stored separately:
+A small feature table might look like this:
+
+| opportunity | product_GTX_Pro | sector_Technology | scaled_sales_price | won |
+|---|---:|---:|---:|---:|
+| 1 | 1 | 1 | 0.42 | 1 |
+| 2 | 0 | 1 | -0.60 | 0 |
+| 3 | 1 | 0 | 1.10 | 1 |
+
+The model is trained on the feature columns:
 
 $$
-y_i
+X
+$$
+
+and the label column:
+
+$$
+y
 $$
 
 For a binary sales model:
@@ -2456,9 +2585,9 @@ $$
 
 where $\hat{p}_i$ is the model's estimated probability.
 
-**Feature groups**
+### Appendix A3: Feature Groups
 
-The superscripts used in the article label different groups of inputs.
+The article uses superscripts to label different groups of inputs.
 
 For example:
 
@@ -2473,8 +2602,6 @@ $$
 $$
 
 means behavioral or interaction-derived features, such as interaction count, reply timing, or channel mix.
-
-The superscripts are not powers. They are labels that say where the features came from.
 
 The combined model can therefore be read as:
 
@@ -2492,15 +2619,104 @@ which means:
 
 > the probability that opportunity $i$ is won, given its static CRM features and behavioral features.
 
-**From histories to feature vectors**
+### Appendix A4: Logistic Regression
+
+In a binary model, logistic regression first converts the feature vector into a single score:
+
+$$
+z_i
+=
+\beta_0
++
+\beta_1x_{i1}
++
+\beta_2x_{i2}
++
+\cdots
++
+\beta_kx_{ik}
+$$
+
+Here:
+
+- $x_{i1}$ is the first feature for example $i$
+- $x_{i2}$ is the second feature for example $i$
+- $k$ is the number of features
+- $\beta_0$ is the intercept
+- $\beta_1,\ldots,\beta_k$ are learned coefficients
+
+A tiny worked example:
+
+```text
+features:
+    product_GTX_Pro      = 1
+    sector_Technology    = 1
+    scaled_sales_price   = 0.42
+
+learned coefficients:
+    intercept            = -0.30
+    product_GTX_Pro      = 0.50
+    sector_Technology    = 0.20
+    scaled_sales_price   = 0.80
+```
+
+The model score is:
+
+$$
+z_i
+=
+-0.30
++
+0.50(1)
++
+0.20(1)
++
+0.80(0.42)
+=
+0.736
+$$
+
+That score is not yet a probability. Logistic regression applies the logistic function:
+
+$$
+\hat{p}_i
+=
+\frac{1}{1 + e^{-z_i}}
+$$
+
+So:
+
+$$
+\hat{p}_i
+=
+\frac{1}{1 + e^{-0.736}}
+\approx
+0.676
+$$
+
+The model would estimate about a $67.6\%$ probability of the positive class.
+
+In code, scikit-learn does this after the model has been fit:
+
+```python
+predicted_probability = model.predict_proba(X_test)[:, 1]
+```
+
+The `[:, 1]` means:
+
+> take every row, and take column 1 of the probability output.
+
+For a binary classifier, column 0 is usually the probability of class `0`, and column 1 is the probability of class `1`.
+
+### Appendix A5: Histories as Feature Vectors
 
 For process-history models, the raw object is no longer just one CRM row. It is a history:
 
 ```text
 A_Submitted
-→ A_Concept
-→ A_Accepted
-→ O_Create Offer
+-> A_Concept
+-> A_Accepted
+-> O_Create Offer
 ```
 
 To use a standard classifier, that history still has to be converted into features.
@@ -2519,17 +2735,12 @@ workflow_event_count    = 1
 
 Those values form the feature vector for that prediction time.
 
-For next-event prediction, the label is the event that happened next:
+For next-event prediction, each training row contains information available at time $t$, and the label is the event that happened at time $t+1$.
 
-```text
-features:
-    current_activity  = A_Accepted
-    previous_activity = A_Concept
-    event_position    = 3
-
-label:
-    next_activity     = O_Create Offer
-```
+| case | event position $t$ | current activity | previous activity | elapsed hours | label: next activity |
+|---|---:|---|---|---:|---|
+| C-001 | 3 | A_Accepted | A_Concept | 12.7 | O_Create Offer |
+| C-002 | 5 | W_Complete application | W_Handle leads | 3.4 | A_Complete |
 
 This is the same supervised-learning structure as before:
 
@@ -2539,7 +2750,9 @@ $$
 \text{observed outcome at time } t+1
 $$
 
-**Categorical and numerical preprocessing**
+The important rule is that features must be computed only from information available at or before time $t$.
+
+### Appendix A6: Categorical and Numerical Preprocessing
 
 For static CRM models, categorical and numerical fields require different preprocessing.
 
@@ -2570,6 +2783,16 @@ GTX Basic   GTX Pro   MG Special
     0          1           0
 ```
 
+The setting:
+
+```python
+OneHotEncoder(handle_unknown="ignore")
+```
+
+means:
+
+> if a category appears in the test set that was not seen during training, do not crash; encode it as all zeros for that feature group.
+
 Numerical fields are already numbers, such as revenue, employee count, elapsed time, or event count.
 
 They were standardized using `StandardScaler`:
@@ -2581,7 +2804,9 @@ from sklearn.preprocessing import StandardScaler
 Standardization converts a raw value $x$ into:
 
 $$
-z = \frac{x - \mu}{\sigma}
+z
+=
+\frac{x - \mu}{\sigma}
 $$
 
 where $\mu$ is the mean of that feature in the training data and $\sigma$ is its standard deviation.
@@ -2598,10 +2823,23 @@ $$
 
 That means the deal is one training-set standard deviation above the training-set average.
 
+A deal worth $30{,}000$ would become:
+
+$$
+z
+=
+\frac{30{,}000 - 50{,}000}{20{,}000}
+=
+-1
+$$
+
+That means the deal is one training-set standard deviation below the training-set average.
+
 The two preprocessing steps were combined using `ColumnTransformer`:
 
 ```python
 from sklearn.compose import ColumnTransformer
+from sklearn.preprocessing import OneHotEncoder, StandardScaler
 
 preprocessor = ColumnTransformer(
     transformers=[
@@ -2619,27 +2857,32 @@ preprocessor = ColumnTransformer(
 )
 ```
 
-**Why preprocessing is fit only on training data**
+This says:
+
+```text
+apply OneHotEncoder to categorical_features
+apply StandardScaler to numeric_features
+combine the resulting columns into one model-readable matrix
+```
+
+### Appendix A7: Training-Only Preprocessing
 
 Most models used scikit-learn pipelines so that preprocessing was fit only on the training data and then applied unchanged to the temporal holdout.
 
 This matters because preprocessing itself can leak future information.
 
-For example, suppose the model is evaluated on later opportunities, but the scaler is fit using both earlier and later opportunities. Then the training process has already seen information about the distribution of the future test set.
+Suppose the model is evaluated on later opportunities, but the scaler is fit using both earlier and later opportunities. Then the training process has already seen information about the distribution of the future test set.
 
 That gives the model information it would not have had at the time of prediction.
 
 The safer workflow is:
 
 ```text
+split rows into train and test by time
 fit preprocessing on training rows only
-↓
 transform training rows
-↓
 train model
-↓
 transform future test rows using the same fitted preprocessing
-↓
 evaluate model
 ```
 
@@ -2665,6 +2908,22 @@ pipeline.fit(X_train, y_train)
 predicted_probability = pipeline.predict_proba(X_test)[:, 1]
 ```
 
+Inside `pipeline.fit`, scikit-learn does this:
+
+```text
+preprocessor.fit_transform(X_train)
+classifier.fit(transformed_X_train, y_train)
+```
+
+Inside `pipeline.predict` or `pipeline.predict_proba`, it does this:
+
+```text
+preprocessor.transform(X_test)
+classifier.predict(...) or classifier.predict_proba(...)
+```
+
+Notice that the test data is transformed, but the preprocessing rules are not refit on the test data.
+
 For the next-event prediction experiment, the target was multiclass rather than binary. Those models used an `SGDClassifier` with logistic loss:
 
 ```python
@@ -2678,7 +2937,21 @@ classifier = SGDClassifier(
 )
 ```
 
-### Appendix B: Evaluation Metrics
+In this setting, the classifier is not asking "won or lost?" It is asking:
+
+```text
+which activity is most likely to happen next?
+```
+
+So the prediction is a class label:
+
+```python
+prediction = pipeline.predict(X_test)
+```
+
+and the evaluation uses multiclass metrics.
+
+### Appendix B1: Evaluation Tasks
 
 The experiments use two kinds of prediction tasks.
 
@@ -2688,7 +2961,7 @@ The second kind is **multiclass classification**: predict exactly which event ha
 
 Those tasks need different metrics.
 
-**ROC AUC**
+### Appendix B2: ROC AUC
 
 For binary opportunity-outcome experiments, ranking performance was measured with ROC AUC:
 
@@ -2703,25 +2976,53 @@ auc = roc_auc_score(
 
 ROC AUC measures how often the model ranks a randomly selected positive case above a randomly selected negative case.
 
-For example, suppose the model gives:
+Here is a small worked example.
 
-```text
-closed deal score      = 0.74
-non-closed deal score  = 0.31
-```
+| deal | observed outcome | model score |
+|---|---:|---:|
+| A | 1 | 0.90 |
+| B | 0 | 0.80 |
+| C | 1 | 0.70 |
+| D | 0 | 0.20 |
 
-That pair is ranked correctly.
+There are two positive examples, A and C, and two negative examples, B and D.
 
-If instead it gives:
+That creates four positive-negative pairs:
 
-```text
-closed deal score      = 0.28
-non-closed deal score  = 0.63
-```
+| pair | correct ranking? | reason |
+|---|---|---|
+| A vs B | yes | $0.90 > 0.80$ |
+| A vs D | yes | $0.90 > 0.20$ |
+| C vs B | no | $0.70 < 0.80$ |
+| C vs D | yes | $0.70 > 0.20$ |
 
-that pair is ranked incorrectly.
+Three of the four pairs are ordered correctly, so:
 
-ROC AUC can be read as the fraction of positive-negative pairs that are ordered correctly, with some adjustment for ties.
+$$
+\operatorname{AUC}
+=
+\frac{3}{4}
+=
+0.75
+$$
+
+With ties, AUC gives half credit. The general counting version is:
+
+$$
+\operatorname{AUC}
+=
+\frac{
+\#\text{correct pairs}
++
+0.5 \cdot \#\text{tied pairs}
+}{
+\#\text{positive examples}
+\cdot
+\#\text{negative examples}
+}
+$$
+
+This is why AUC is a ranking metric. It does not require the predicted probability to be perfectly calibrated. It asks whether positive examples tend to receive higher scores than negative examples.
 
 An AUC of:
 
@@ -2737,7 +3038,9 @@ $$
 
 represents perfect ranking.
 
-**Spearman rank correlation**
+In the synthetic experiment, AUC was useful because the observed outcome $Y_i$ was stochastic. Even if a deal had high true probability, it could still fail to close. AUC asks whether the model tends to rank the closed deals higher overall.
+
+### Appendix B3: Spearman Rank Correlation
 
 The synthetic experiment also compares the model's predicted ranking against latent quantities that are known only because the data was simulated.
 
@@ -2761,7 +3064,56 @@ raw scores:   0.20   0.90   0.40
 ranks:          1      3      2
 ```
 
-It then measures how similar two rank orderings are.
+Then it compares the rank ordering of one variable with the rank ordering of another variable.
+
+Here is a worked example with four opportunities.
+
+| opportunity | model score $\hat{p}$ | rank of $\hat{p}$ | latent appetite $A$ | rank of $A$ | rank difference $d$ |
+|---|---:|---:|---:|---:|---:|
+| A | 0.10 | 1 | 5.0 | 1 | 0 |
+| B | 0.85 | 4 | 8.0 | 3 | 1 |
+| C | 0.40 | 2 | 6.0 | 2 | 0 |
+| D | 0.70 | 3 | 10.0 | 4 | -1 |
+
+Without ties, Spearman correlation can be computed as:
+
+$$
+\rho_s
+=
+1
+-
+\frac{
+6\sum_i d_i^2
+}{
+n(n^2 - 1)
+}
+$$
+
+In this example:
+
+$$
+\sum_i d_i^2
+=
+0^2 + 1^2 + 0^2 + (-1)^2
+=
+2
+$$
+
+and:
+
+$$
+\rho_s
+=
+1
+-
+\frac{6(2)}{4(4^2 - 1)}
+=
+1
+-
+\frac{12}{60}
+=
+0.8
+$$
 
 A value near:
 
@@ -2801,9 +3153,17 @@ $$
 
 The first compares the model ranking with total latent appetite. The second compares it with the systematic ordering recoverable from observable features.
 
-**Accuracy and F1**
+This distinction matters because:
 
-For next-event prediction, the target has many possible classes, so the experiment also reports accuracy, macro F1, and weighted F1.
+$$
+A_i = S_i + \epsilon_i
+$$
+
+The model can learn structure in $S_i$ because $S_i$ is built from observable inputs. It cannot directly recover the realized value of $\epsilon_i$ because that term is hidden.
+
+### Appendix B4: Accuracy
+
+For next-event prediction, the target has many possible classes, so the experiment reports accuracy, macro F1, and weighted F1.
 
 Accuracy measures the proportion of predictions that are exactly correct.
 
@@ -2817,11 +3177,34 @@ $$
 0.84
 $$
 
-But next-event classes are not equally common. A model can achieve good accuracy by predicting common events well while performing badly on rare events.
+In scikit-learn:
 
-That is why F1 is also reported.
+```python
+from sklearn.metrics import accuracy_score
 
-Precision asks:
+accuracy = accuracy_score(
+    y_test,
+    prediction
+)
+```
+
+Accuracy is easy to understand, but it can hide poor performance on rare classes.
+
+Suppose a dataset has $100$ next events:
+
+```text
+80 are A_Submitted
+15 are O_Create Offer
+5 are A_Cancelled
+```
+
+A model that mostly predicts the common class can look decent by accuracy while still being bad at rare but important events.
+
+### Appendix B5: Precision, Recall, and F1
+
+F1 is built from precision and recall.
+
+For one class, precision asks:
 
 > Of the cases the model predicted as this class, how many were actually this class?
 
@@ -2830,6 +3213,34 @@ Recall asks:
 > Of the cases that truly belonged to this class, how many did the model find?
 
 For one class:
+
+$$
+\operatorname{Precision}
+=
+\frac{
+\operatorname{true\ positives}
+}{
+\operatorname{true\ positives}
++
+\operatorname{false\ positives}
+}
+$$
+
+and:
+
+$$
+\operatorname{Recall}
+=
+\frac{
+\operatorname{true\ positives}
+}{
+\operatorname{true\ positives}
++
+\operatorname{false\ negatives}
+}
+$$
+
+Then:
 
 $$
 F_1
@@ -2847,9 +3258,111 @@ F_1
 }
 $$
 
-**Macro F1** calculates F1 separately for each class and gives every class equal weight.
+A small example for one class:
 
-**Weighted F1** also calculates F1 separately, but weights classes according to how often they occur.
+```text
+true positives   = 8
+false positives  = 2
+false negatives  = 4
+```
+
+Then:
+
+$$
+\operatorname{Precision}
+=
+\frac{8}{8 + 2}
+=
+0.80
+$$
+
+and:
+
+$$
+\operatorname{Recall}
+=
+\frac{8}{8 + 4}
+\approx
+0.667
+$$
+
+so:
+
+$$
+F_1
+=
+2
+\cdot
+\frac{0.80 \cdot 0.667}{0.80 + 0.667}
+\approx
+0.727
+$$
+
+In scikit-learn:
+
+```python
+from sklearn.metrics import f1_score
+
+macro_f1 = f1_score(
+    y_test,
+    prediction,
+    average="macro"
+)
+
+weighted_f1 = f1_score(
+    y_test,
+    prediction,
+    average="weighted"
+)
+```
+
+### Appendix B6: Macro F1 and Weighted F1
+
+Macro F1 calculates F1 separately for each class and gives every class equal weight.
+
+Weighted F1 also calculates F1 separately, but weights classes according to how often they occur.
+
+Suppose a next-event model has these class-level F1 scores:
+
+| next-event class | support | class F1 |
+|---|---:|---:|
+| A_Submitted | 80 | 0.90 |
+| O_Create Offer | 15 | 0.50 |
+| A_Cancelled | 5 | 0.10 |
+
+Macro F1 is:
+
+$$
+\operatorname{Macro\ F1}
+=
+\frac{0.90 + 0.50 + 0.10}{3}
+=
+0.50
+$$
+
+Weighted F1 is:
+
+$$
+\operatorname{Weighted\ F1}
+=
+\frac{
+80(0.90)
++
+15(0.50)
++
+5(0.10)
+}{
+100
+}
+=
+0.80
+$$
+
+The same model can therefore have high weighted F1 and much lower macro F1.
+
+That pattern means:
+
+> the model is doing much better on common classes than rare classes.
 
 The increase in macro F1:
 
@@ -2861,7 +3374,7 @@ $$
 
 therefore matters because it suggests that resource context improved prediction across the set of next-event classes, not only for the most frequent transition.
 
-### Appendix C: Data and Reproducibility
+### Appendix C1: Data and Reproducibility
 
 The notebooks are published in the companion GitHub repository:
 
