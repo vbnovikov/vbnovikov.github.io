@@ -17,9 +17,11 @@ const articleDir = path.join(distDir, "blog", "deal-appetite-experiment");
 const markdownPath = path.join(projectRoot, "src", "content", "deal-appetite-experiment.md");
 const indexPath = path.join(distDir, "index.html");
 const outputPath = path.join(articleDir, "index.html");
+const markdownOutputPath = path.join(articleDir, "index.md");
 
 const articleTitle = "Deal Appetite Experiment | Vladimir Belsch";
 const articleUrl = "https://vladimirbelsch.com/blog/deal-appetite-experiment/";
+const articleMarkdownUrl = "https://vladimirbelsch.com/blog/deal-appetite-experiment/index.md";
 const articleDate = "2026-08-31";
 const articleDescription =
   "A technical essay moving from a broad sales-ranking conjecture toward stateful process prediction and graph-shaped CRM context.";
@@ -219,6 +221,12 @@ const upsertCanonical = (html, href) => {
   return pattern.test(html) ? html.replace(pattern, tag) : insertHeadContent(html, `    ${tag}`);
 };
 
+const addArticleAlternateLinks = (html) =>
+  insertHeadContent(
+    html,
+    `    <link rel="alternate" type="text/markdown" href="${articleMarkdownUrl}" title="Markdown source for Deal Appetite Experiment" />`,
+  );
+
 const addArticleStructuredData = (html) => {
   const articleData = {
     "@context": "https://schema.org",
@@ -303,11 +311,14 @@ html = upsertPropertyMeta(html, "article:published_time", articleDate);
 html = upsertPropertyMeta(html, "article:modified_time", articleDate);
 html = upsertPropertyMeta(html, "article:section", "Experiments");
 html = upsertCanonical(html, articleUrl);
+html = addArticleAlternateLinks(html);
 html = addArticleCss(html);
 html = addArticleStructuredData(html);
 html = replaceRootContent(html, staticShell);
 
 fs.mkdirSync(articleDir, { recursive: true });
 fs.writeFileSync(outputPath, html);
+fs.writeFileSync(markdownOutputPath, markdown);
 
 console.log(`Rendered static article to ${path.relative(projectRoot, outputPath)}`);
+console.log(`Rendered article markdown to ${path.relative(projectRoot, markdownOutputPath)}`);

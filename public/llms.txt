@@ -1,0 +1,13 @@
+# Vladimir Belsch
+
+> Portfolio and technical writing about solutions engineering, SaaS, cloud infrastructure, automation, CRM systems, and machine learning experiments.
+
+## Site
+
+- [Home](https://vladimirbelsch.com/): Professional portfolio for Vladimir Belsch.
+- [Sitemap](https://vladimirbelsch.com/sitemap.xml): XML sitemap for the site.
+
+## Articles
+
+- [Deal Appetite Experiment](https://vladimirbelsch.com/blog/deal-appetite-experiment/): A technical essay moving from a broad sales-ranking conjecture toward stateful process prediction and graph-shaped CRM context.
+- [Deal Appetite Experiment Markdown](https://vladimirbelsch.com/blog/deal-appetite-experiment/index.md): Markdown version of the same article for text-only readers and LLM fetchers.
