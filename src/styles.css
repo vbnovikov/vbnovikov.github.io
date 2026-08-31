@@ -1205,23 +1205,25 @@ p {
   color: var(--muted);
   font-size: 0.83rem;
   line-height: 1.35;
-  padding: 0.32rem 0;
+  margin-left: -0.45rem;
+  border-radius: 4px;
+  padding: 0.32rem 0.45rem;
   text-decoration: none;
   transition:
-    color 160ms ease,
-    transform 160ms ease;
+    background 160ms ease,
+    color 160ms ease;
 }
 
 .article-toc-link:hover,
 .article-toc-link:focus-visible {
+  background: rgba(49, 92, 138, 0.07);
   color: var(--accent-dark);
-  transform: translateX(2px);
 }
 
 .article-toc-depth-3 {
   color: var(--quiet);
   font-size: 0.78rem;
-  padding-left: 0.78rem;
+  padding-left: 1.1rem;
 }
 
 .article-back-link {
