@@ -14,11 +14,13 @@
     "@tsparticles/react": "^4.3.2",
     "@tsparticles/slim": "^4.3.2",
     "framer-motion": "^13.1.1",
+    "highlight.js": "^11.12.0",
     "katex": "^0.18.5",
     "lucide-react": "^1.33.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-markdown": "^10.1.0",
+    "rehype-highlight": "^7.0.2",
     "rehype-katex": "^7.0.1",
     "remark-gfm": "^4.0.1",
     "remark-math": "^6.0.0"
