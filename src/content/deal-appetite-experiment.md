@@ -2,6 +2,8 @@
 
 From a latent sales-ranking conjecture to stateful process prediction.
 
+Companion repository: [vbnovikov/deal-appetite-experiment](https://github.com/vbnovikov/deal-appetite-experiment)
+
 After looking at CRM data and business workflows across several clients, I started to wonder whether there was some underlying combination of factors that could reliably predict deal closing probability better than a simple lead score.
 
 Things like number of touchpoints, response patterns, friction, time between interactions, stage movement, and other parts of the customer journey all seemed potentially useful when considered together.
