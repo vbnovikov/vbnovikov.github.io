@@ -23,7 +23,7 @@ The production output is written to `dist`.
 
 ## GitHub Pages Deployment
 
-This repo includes `.github/workflows/deploy-pages.yml`, which deploys the `dist` build from `main` using GitHub Pages. The workflow also copies `dist/index.html` to `dist/404.html` so direct single-page app routes such as `/blog/deal-appetite-experiment` load correctly.
+This repo includes `.github/workflows/deploy-pages.yml`, which deploys the `dist` build from `main` using GitHub Pages. The workflow also emits a static article entrypoint at `/blog/deal-appetite-experiment/` and copies `dist/index.html` to `dist/404.html` as a single-page app fallback.
 
 For `vbnovikov/vbnovikov.github.io`:
 

@@ -34,8 +34,11 @@ jobs:
       - name: Build
         run: npm run build
 
-      - name: Add single-page app fallback
-        run: cp dist/index.html dist/404.html
+      - name: Add article route and single-page app fallback
+        run: |
+          mkdir -p dist/blog/deal-appetite-experiment
+          cp dist/index.html dist/blog/deal-appetite-experiment/index.html
+          cp dist/index.html dist/404.html
 
       - name: Configure Pages
         uses: actions/configure-pages@v5
